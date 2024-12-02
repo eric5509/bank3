@@ -7,10 +7,7 @@ import ModalLayout2 from "../admin/ModalLayout";
 import { useAppDispatch, useAppSelector } from "@/provider/store/hook";
 import UpdateActiveButton from "../global/UpdateActiveButton";
 import { useState } from "react";
-import { deleteUserLink, usersLink } from "@/lib/links";
-import axios from "axios";
-import { emptyAccounts, loadAccounts } from "@/provider/slice/account";
-import { closeModal } from "@/provider/slice/modal";
+import { deleteAccount } from "../admin/Request";
 
 type Props = {
   modal: string
@@ -22,36 +19,13 @@ export default function AccountModal({ modal }: Props) {
   const storeData = useAppSelector(store => store.account.account)
 
   const deleteUser = async () => {
+    console.log(storeData.id)
     if (loading) return
-    try {
-      setLoading(true)
-      const response = await fetch(`${deleteUserLink}${storeData?.id}`, {
-        method: "DELETE",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ id: storeData.id }),
-      });
-      const result = await response.json()
-      if (!result.success) {
-        throw new Error(`Failed to delete user`);
-      }
-      const users = await axios.get(usersLink);
-      const data = users.data.data
-      if(data.length > 0){
-        dispatch(loadAccounts(data))
-      }else{
-        dispatch(emptyAccounts())
-      }
-      dispatch(closeModal())
-      console.log("User deleted successfully:", result.message);
-    } catch (error) {
-      console.error("Error deleting user:", error);
-    }
+    setLoading(true)
+    const accountDeleted = await deleteAccount(storeData?.id)
+    setLoading(false)
+    console.log(accountDeleted)
 
-    finally {
-      setLoading(false)
-    }
   }
   const data = useAppSelector(store => store.account.account)
   const address = `${data?.street} ${data?.city} ${data?.state} ${data?.zipCode} ${data?.country}`

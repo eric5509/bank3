@@ -7,9 +7,11 @@ export default async function page() {
   const accounts = await fetch(usersLink)
   const response = await accounts.json()
   const result = response.data
+  console.log(result)
   return (
       <AnimatePageLayout>
        <BaseAccount accounts={result}/>
       </AnimatePageLayout>
   )
 }
+ 

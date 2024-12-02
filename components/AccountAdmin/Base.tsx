@@ -15,6 +15,7 @@ export default function Base({ accounts }: Props) {
     const dispatch = useAppDispatch()
     const storeData = useAppSelector(store => store.account.displayedAccounts)
 
+    
     useEffect(() => {
         if (accounts?.length > 0) dispatch(loadAccounts(accounts))
     }, [])

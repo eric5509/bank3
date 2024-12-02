@@ -12,5 +12,5 @@ export async function POST(request: Request) {
     subject: "Capital Bank Verification",
     react: EmailVerificationTemplate({ code, firstName }),
   });
-  return NextResponse.json({ status: 200, message: "Code Sent" });
+  return NextResponse.json({ success: true, data: null, message: "Code Sent" }, { status: 200 });
 }

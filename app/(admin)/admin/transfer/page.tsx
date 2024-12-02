@@ -14,7 +14,6 @@ export default async function page() {
     const response2 = await options.json()
     const Options = response2.data
     return (
-
         <PageLayout>
             <AnimatePageLayout>
                 <Base transfers={Transfers} accounts={Accounts} options={Options}/>

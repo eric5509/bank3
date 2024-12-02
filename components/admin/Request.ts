@@ -1,6 +1,13 @@
 import axios from "axios";
 import { ValuesDataType } from "./data";
-import { deleteTransferLink, usersLink } from "@/lib/links";
+import { deleteTransferLink, deleteUserLink, usersLink } from "@/lib/links";
+
+export type TResponse = {
+  data: any,
+  message: string,
+  success: boolean
+
+}
 
 export const CreateAccount = async (values: ValuesDataType) => {
   try {
@@ -35,11 +42,7 @@ export const CreateAccount = async (values: ValuesDataType) => {
         password: values.password,
       }),
     });
-    const result = await response.json();
-    if (!result.success) {
-      return { success: false, message: result.message };
-    }
-    return { success: true, code: result.data, message: result.message };
+    return response.json();
   } catch (error: any) {
     return { success: false, message: error.message || "Something went wrong" };
   }
@@ -63,38 +66,48 @@ export const sendTokenAfterRegistration = async ({
         firstName,
       }),
     });
-    const result = await response.json();
-    if (!result.success) {
-      return result;
-    }
-    return result;
+    return await response.json();
   } catch (error: any) {
-    return { success: false, message: error.message };
+    return { success: false, message: error.message, data: null };
   }
 };
 
-export const deleteTransfer = async (id: string | undefined) => {
+export const deleteTransfer = async (id: string | undefined): Promise<TResponse | undefined> =>  {
   if (id) {
     console.log(id);
     try {
       const response = await fetch(`${deleteTransferLink}${id}`, {
         method: "DELETE",
       });
-      const result = await response.json();
-      return result;
+      return await response.json();
     } catch (error: any) {
-      return { data: null, error: error.message, success: false };
+      return { data: null, message: error.message, success: false };
     }
   }
 };
 
 export const fetchAllUsers = async () => {
   try {
-    const users = await fetch(usersLink);
-    const response = await users.json();
-    const result = await response.data;
-    return result;
+    const response = await fetch(usersLink);
+    return await response.json();
   } catch (error: any) {
     return { data: null, error: error.message, success: false };
+  }
+};
+
+export const deleteAccount = async (id: string | undefined) => {
+  if (id) {
+    try {
+      const response = await fetch(`${deleteUserLink}${id}`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ id }),
+      });
+      return await response.json();
+    } catch (error: any) {
+      return { data: null, error: error.message, success: false };
+    }
   }
 };
