@@ -13,12 +13,7 @@ type TInitialState = {
 
 const initialState: TInitialState = {
   accounts: [],
-  options: [
-    {
-      label: '',
-      value: ''
-    }
-  ],
+  options: [],
   displayedAccounts: [],
   account: {}
 };
@@ -28,7 +23,7 @@ export const AccountSlice = createSlice({
   initialState,
   reducers: {
     loadOptions: (state, action) => {
-      state.options = action.payload.data
+      state.options = action.payload
     },
     emptyAccounts: (state) => {
       state.displayedAccounts = []

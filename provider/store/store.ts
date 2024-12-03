@@ -3,13 +3,15 @@ import { AccountSlice } from "../slice/account";
 import { ModalSlice } from "../slice/modal";
 import { TransactionSlice } from "../slice/transactions";
 import { TransferSlice } from "../slice/transfer";
+import { LoanSlice } from "../slice/loan";
 
 export const store = configureStore({
     reducer:{
         account: AccountSlice.reducer,
         modal: ModalSlice.reducer,
         transaction: TransactionSlice.reducer,
-        transfer: TransferSlice.reducer
+        transfer: TransferSlice.reducer,
+        loan: LoanSlice.reducer
     }
 })
 

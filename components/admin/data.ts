@@ -450,8 +450,6 @@ export const nationalities = [
   "zimbabwean",
 ];
 
-
-
 export const users: TAccount[] = [
   {
     id: "1",
@@ -744,3 +742,31 @@ export const users: TAccount[] = [
     password: "securepassword10",
   },
 ];
+
+export const TransferOutoundInputInitialValues = {
+  senderAccountNumber: "",
+  recipientAccountName: "",
+  recipientAccountNumber: "",
+  recipientBankName: "",
+  status: "",
+  amount: "",
+  description: "",
+  date: "",
+};
+export const TransferInboundInputInitialValues = {
+  recipientAccountNumber: '',
+  senderAccountName: '',
+  senderAccountNumber: '',
+  senderBankName: '',
+  status: '',
+  amount: '',
+  description: '',
+  date: '',
+};
+export const LoanInputInitialValues = {
+  accountNumber: '',
+  status: '',
+  amount: '',
+  reason: '',
+  date: '',
+};

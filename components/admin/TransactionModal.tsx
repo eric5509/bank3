@@ -22,19 +22,7 @@ export default function TransactionModal({ modal }: Props) {
   const dispatch = useAppDispatch()
   const deleteTransaction = async () => {
     if(loading) return
-    try {
-      setLoading(true)
-      const response = await axios.delete(`${deleteTransactionLink}${storeData?.transactionID}`);
-      if (response.statusText === 'OK') {
-        const response = await axios.get(transactionsLink);
-        dispatch(loadTransactions(response.data.data))
-        dispatch(closeModal())
-      }
-    } catch (error) {
-    }
-    finally {
-      setLoading(false)
-    }
+    
   }
   useEffect(() => {
     console.log(storeData, 'Status')

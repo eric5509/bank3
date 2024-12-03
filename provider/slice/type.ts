@@ -63,6 +63,28 @@ export type TAccount2 = {
 };
 
 
+export type TTransferOutBound = {
+  senderAccountNumber: string
+  recipientAccountName: string
+  recipientAccountNumber: string
+  recipientBankName: string
+  status: string
+  amount: string
+  description: string
+  date: string
+}
+
+export type TTransferInBound = {
+  recipientAccountNumber: string
+  senderAccountName: string
+  senderAccountNumber: string
+  senderBankName: string
+  status: string
+  amount: string
+  description: string
+  date: string
+}
+
 
 export type TTransaction = {
   accountHolder: string;
@@ -98,3 +120,15 @@ export type TTransfer = {
   recipientId?: string;
   id?: string;
 };
+
+
+
+export type TLoan = {
+  user: string
+  accountHolder: string 
+  accountNumber: string 
+  amount: string 
+  reason: string 
+  date: string
+  status: string 
+}

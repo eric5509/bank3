@@ -47,10 +47,10 @@ export default function Dropdown({ account, id, Status }: Props) {
     const dispatch = useAppDispatch()
 
     useEffect(() => {
+       
         if (account) {
             dispatch(filterAccount(status[active]))
         }
-        console.log(status[active])
     }, [active])
 
     const handleOptionClick = async (key: number) => {
@@ -68,6 +68,18 @@ export default function Dropdown({ account, id, Status }: Props) {
         }
     };
 
+    useEffect(() => {
+        if(Status === 'pending'){
+            setActive(1)
+        }
+        if(Status === 'success'){
+            setActive(2)
+        }
+        if(Status === 'failed'){
+            setActive(3)
+        }
+        console.log(Status)
+    }, [])
 
 
     return (

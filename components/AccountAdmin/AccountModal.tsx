@@ -7,28 +7,39 @@ import ModalLayout2 from "../admin/ModalLayout";
 import { useAppDispatch, useAppSelector } from "@/provider/store/hook";
 import UpdateActiveButton from "../global/UpdateActiveButton";
 import { useState } from "react";
-import { deleteAccount } from "../admin/Request";
+import { deleteAccount } from "@/lib/Delete";
+import { fetchAllUsers } from "@/lib/Get";
+import { loadAccounts } from "@/provider/slice/account";
 
 type Props = {
   modal: string
 }
 
 export default function AccountModal({ modal }: Props) {
+  const data = useAppSelector(store => store.account.account)
   const [loading, setLoading] = useState(false)
   const dispatch = useAppDispatch()
   const storeData = useAppSelector(store => store.account.account)
+
+  
 
   const deleteUser = async () => {
     console.log(storeData.id)
     if (loading) return
     setLoading(true)
     const accountDeleted = await deleteAccount(storeData?.id)
+    if(accountDeleted.success){
+      const result = await fetchAllUsers()
+      if(result.success){
+        if(result.data.length > 0){
+          dispatch(loadAccounts(result.data))
+        }
+      }
+    }
     setLoading(false)
     console.log(accountDeleted)
 
   }
-  const data = useAppSelector(store => store.account.account)
-  const address = `${data?.street} ${data?.city} ${data?.state} ${data?.zipCode} ${data?.country}`
   return (
     <ModalLayout2 modal={modal}>
       <div className="flex items-center gap-4">
@@ -57,7 +68,7 @@ export default function AccountModal({ modal }: Props) {
           <LabelValue labelStyle={{ color: 'lightgray' }} label="Date of Birth" value={data.dob} />
           <LabelValue labelStyle={{ color: 'lightgray' }} capitalize label="Nationality" value={data?.nationality} />
           <LabelValue labelStyle={{ color: 'lightgray' }} label="Currency" uppercase value={data?.currency} />
-          <LabelValue labelStyle={{ color: 'lightgray' }} capitalize label="Residential Address" value={address} />
+          <LabelValue labelStyle={{ color: 'lightgray' }} capitalize label="Residential Address" value={`${data?.street} ${data?.city} ${data?.state} ${data?.zipCode} ${data?.country}`} />
           <LabelValue labelStyle={{ color: 'lightgray' }} label="Occupation" value={data?.occupation} />
           <LabelValue labelStyle={{ color: 'lightgray' }} label="Marital Status" capitalize value={data?.maritalStatus} />
           <LabelValue labelStyle={{ color: 'lightgray' }} label="Account Type" capitalize value={data?.accountType} />

@@ -7,50 +7,30 @@ import Select from "../global/Select";
 import Button2 from "../global/Button2";
 import { useAppDispatch, useAppSelector } from "@/provider/store/hook";
 import { validate } from "../global/Validate";
-import { allTransferLink, inboundTransferLink } from "@/lib/links";
-import axios from "axios";
 import { closeModal } from "@/provider/slice/modal";
 import Success from "./Success";
 import { loadTransfers } from "@/provider/slice/transfer";
+import { TransferInboundInputInitialValues } from "./data";
+import { InitializeInboundTransfer } from "@/lib/Post";
+import { fetchAllTransfer } from "@/lib/Get";
 
 export default function TransferInbound() {
     const [loading, setLoading] = useState(false)
-    const options = useAppSelector(store=> store.account.options)
+    const options = useAppSelector(store => store.account.options)
     const [success, setSuccess] = useState(false)
     const dispatch = useAppDispatch()
-    const [values, setValues] = useState({
-        recipientAccountNumber: '',
-        senderAccountName: '',
-        senderAccountNumber: '',
-        senderBankName: '',
-        status: '',
-        amount: '',
-        description: '',
-        date: ''
-
-    })
-    const [errors, setErrors] = useState({
-        recipientAccountNumber: '',
-        senderAccountName: '',
-        senderAccountNumber: '',
-        senderBankName: '',
-        status: '',
-        amount: '',
-        description: '',
-        date: ''
-    })
+    const [values, setValues] = useState(TransferInboundInputInitialValues)
+    const [errors, setErrors] = useState(TransferInboundInputInitialValues)
     const onChange = (event: any) => {
         const { name, value } = event.target
         setValues({ ...values, [name]: value })
         setErrors({ ...errors, [name]: "" })
     }
- 
+
 
     const fetchData = async () => {
-        const request = await fetch(allTransferLink)
-        const response = await request.json()
-        const Transfers = response.data
-        dispatch(loadTransfers(Transfers))
+        const result = await fetchAllTransfer()
+        dispatch(loadTransfers(result.data))
     }
 
 
@@ -58,45 +38,35 @@ export default function TransferInbound() {
         const isValid = validate(values)
         if (!isValid.valid) return setErrors({ ...errors, ...isValid.errors })
         if (isNaN(Number(values.amount))) return setErrors({ ...errors, amount: 'Please input a valid amount' })
-        try {
-            setLoading(true)
-            const result = await axios.post(inboundTransferLink, values);
-            console.log(result)
-            await fetchData()
-            setSuccess(true)
-            setValues({
-                recipientAccountNumber: '',
-                senderAccountName: '',
-                senderAccountNumber: '',
-                senderBankName: '',
-                status: '',
-                amount: '',
-                description: '',
-                date: ''
-            })
-            setTimeout(() => { setSuccess(false); dispatch(closeModal()) }, 3000);
-
-        } catch (error: any) {
-            console.log(error)
-            if (error.response.data.message === "Sender and Recipient cannot be the same") {
-                setErrors({ ...errors, recipientAccountNumber: error.response.data.message })
+        setLoading(true)
+        const result = await InitializeInboundTransfer(values);
+        console.log(result.message)
+        if (!result.success) {
+            if (result.message === "Account does not exist") {
+                setErrors({ ...errors, recipientAccountNumber: result.message })
             }
-            if (error.response.data.message === "Recipient Account Number not Valid") {
-                setErrors({ ...errors, recipientAccountNumber: error.response.data.message })
+            if (result.message === "Sender and Recipient cannot be the same") {
+                setErrors({ ...errors, recipientAccountNumber: result.message })
             }
-            if (error.response.data.message === "Insufficient funds") {
-                setErrors({ ...errors, amount: error.response.data.message })
+            if (result.message === "Recipient Account Number not Valid") {
+                setErrors({ ...errors, recipientAccountNumber: result.message })
             }
-        } finally {
-            setLoading(false)
+            if (result.message === "Insufficient funds") {
+                setErrors({ ...errors, amount: result.message })
+            }
+            return setLoading(false)
         }
+        await fetchData()
+        setSuccess(true)
+        setValues(TransferInboundInputInitialValues)
+        setTimeout(() => { setSuccess(false); dispatch(closeModal()) }, 3000);
     }
 
 
 
     return (
         <ModalLayout success={success} modal="inboundTransfer">
-            <Success success={success}/>
+            <Success success={success} />
             <div className="flex justify-between">
                 <Title title="Transfer to Capital Bank" />
             </div>

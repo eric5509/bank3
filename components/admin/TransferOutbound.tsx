@@ -12,44 +12,27 @@ import axios from "axios";
 import { closeModal } from "@/provider/slice/modal";
 import Success from "./Success";
 import { loadTransfers } from "@/provider/slice/transfer";
+import { TransferOutoundInputInitialValues } from "./data";
+import { fetchAllTransactions, fetchAllTransfer } from "@/lib/Get";
+import { InitializeOutboundTransfer } from "@/lib/Post";
+
+
 
 export default function TransferOutbound() {
     const [loading, setLoading] = useState(false)
-    const options = useAppSelector(store=> store.account.options)
+    const options = useAppSelector(store => store.account.options)
     const [success, setSuccess] = useState(false)
     const dispatch = useAppDispatch()
-    const [values, setValues] = useState({
-        senderAccountNumber: '',
-        recipientAccountName: '',
-        recipientAccountNumber: '',
-        recipientBankName: '',
-        status: '',
-        amount: '',
-        description: '',
-        date: ''
-
-    })
-    const [errors, setErrors] = useState({
-        senderAccountNumber: '',
-        recipientAccountName: '',
-        recipientAccountNumber: '',
-        recipientBankName: '',
-        status: '',
-        amount: '',
-        description: '',
-        date: ''
-    })
+    const [values, setValues] = useState(TransferOutoundInputInitialValues)
+    const [errors, setErrors] = useState(TransferOutoundInputInitialValues)
     const onChange = (event: any) => {
         const { name, value } = event.target
         setValues({ ...values, [name]: value })
         setErrors({ ...errors, [name]: "" })
     }
-    
     const fetchData = async () => {
-        const request = await fetch(allTransferLink)
-        const response = await request.json()
-        const Transfers = response.data
-        dispatch(loadTransfers(Transfers))
+        const result = await fetchAllTransfer()
+        dispatch(loadTransfers(result.data))
     }
 
 
@@ -57,38 +40,25 @@ export default function TransferOutbound() {
         const isValid = validate(values)
         if (!isValid.valid) return setErrors({ ...errors, ...isValid.errors })
         if (isNaN(Number(values.amount))) return setErrors({ ...errors, amount: 'Please input a valid amount' })
-        try {
-            setLoading(true)
-            const result = await axios.post(outboundTransferLink, values);
-            console.log(result)
-            await fetchData()
-            setSuccess(true)
-            setValues({
-                senderAccountNumber: '',
-                recipientAccountName: '',
-                recipientAccountNumber: '',
-                recipientBankName: '',
-                status: '',
-                amount: '',
-                description: '',
-                date: ''
-            })
-            setTimeout(() => { setSuccess(false); dispatch(closeModal()) }, 3000);
-
-        } catch (error: any) {
-            console.log(error)
-            if (error.response.data.message === "Sender and Recipient cannot be the same") {
-                setErrors({ ...errors, recipientAccountNumber: error.response.data.message })
+        setLoading(true)
+        const result = await InitializeOutboundTransfer(values);
+        if (!result.success) {
+            if (result.message === "Sender and Recipient cannot be the same") {
+                setErrors({ ...errors, recipientAccountNumber: result.message })
             }
-            if (error.response.data.message === "Sender Account Number not Valid") {
-                setErrors({ ...errors, senderAccountNumber: error.response.data.message })
+            if (result.message === "Sender Account Number not Valid") {
+                setErrors({ ...errors, senderAccountNumber: result.message })
             }
-            if (error.response.data.message === "Insufficient funds") {
-                setErrors({ ...errors, amount: error.response.data.message })
+            if (result.message === "Insufficient funds") {
+                setErrors({ ...errors, amount: result.message })
             }
-        } finally {
-            setLoading(false)
+            return setLoading(false)
         }
+        await fetchData()
+        setLoading(false)
+        setSuccess(true)
+        setValues(TransferOutoundInputInitialValues)
+        setTimeout(() => { setSuccess(false); dispatch(closeModal()) }, 3000);
     }
 
     return (

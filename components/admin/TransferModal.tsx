@@ -8,7 +8,10 @@ import LabelValue from "../global/LabelValue";
 import ModalLayout from "./ModalLayout";
 import { useAppDispatch, useAppSelector } from "@/provider/store/hook";
 import { useEffect, useState } from "react";
-import { deleteTransfer } from "./Request";
+import { deleteTransfer } from "@/lib/Delete";
+import { fetchAllTransfer } from "@/lib/Get";
+import { loadTransfers } from "@/provider/slice/transfer";
+import { closeModal } from "@/provider/slice/modal";
 
 type Props = {
   modal: string
@@ -19,8 +22,14 @@ export default function TransferModal({ modal }: Props) {
   const [loading, setLoading] = useState(false)
   const dispatch = useAppDispatch()
   const DeleteTransfer = async () => {
+    setLoading(true)
     const deleteResult = await deleteTransfer(storeData?.id)
-    console.log(deleteResult)
+    if(deleteResult?.success){
+      const result = await fetchAllTransfer()
+      setLoading(false)
+      dispatch(loadTransfers(result.data))
+    }
+    dispatch(closeModal())
   }
   useEffect(() => {
     console.log(storeData, 'Status')
@@ -37,7 +46,7 @@ export default function TransferModal({ modal }: Props) {
               </Link>
             </div>
             <div className="flex items-center gap-7">
-              <Dropdown />
+              <Dropdown Status={storeData?.status}/>
               <div onClick={DeleteTransfer} className="">
                 <Delete loading={loading} />
               </div>

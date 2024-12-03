@@ -2,7 +2,8 @@ import type { Metadata } from "next";
 import { Poppins } from 'next/font/google';
 import "./globals.css";
 import AppProvider from "@/provider/app/AppProvider";
-import { usersLink } from "@/lib/links";
+import { allLoansLink, allTransferLink, optionsLink, transactionsLink, usersLink } from "@/lib/links";
+import State from "@/components/admin/State";
 
 
 
@@ -23,10 +24,23 @@ export default async function RootLayout({
   const accounts = await fetch(usersLink)
   const response = await accounts.json()
   const result = response.data
+  const options = await fetch(optionsLink)
+  const response2 = await options.json()
+  const result2 = response2.data
+  const transfers = await fetch(allTransferLink)
+  const response3 = await transfers.json()
+  const result3 = response3.data
+  const transactions = await fetch(transactionsLink)
+  const response4 = await transactions.json()
+  const result4 = response4.data
+  const loans = await fetch(allLoansLink)
+  const response5 = await loans.json()
+  const result5 = response5.data
   return (
     <html lang="en">
       <body className={`${font.className}`}>
         <AppProvider>
+          <State options={result2} loans={result5} transactions={result4} transfers={result3} accounts={result}/>
           {children}
         </AppProvider>
       </body>

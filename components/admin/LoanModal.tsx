@@ -1,52 +1,75 @@
-"use client";
-import { Calendar, Mail, PhoneCall } from "lucide-react";
-import Link from "next/link";
-import ModalLabelValue from "../global/ModalLabelValue";
-import PenButton from "../global/PenButton";
-import Dropdown from "../global/Dropdown";
-import Delete from "../global/Delete";
+'use client'
+import { useEffect, useState } from "react";
+import Input from "../global/Input";
+import Title from "../global/Title";
+import Select from "../global/Select";
+import Button2 from "../global/Button2";
+import { validate } from "../global/Validate";
+import { creditLink, transactionsLink } from "@/lib/links";
+import { useAppDispatch, useAppSelector } from "@/provider/store/hook";
+import { closeModal } from "@/provider/slice/modal";
+import ModalLayout from "./ModalLayout";
+import { loadTransactions } from "@/provider/slice/transactions";
+import axios from "axios";
+import Success from "./Success";
+import { LoanInputInitialValues } from "./data";
+import { fetchAllLoans } from "@/lib/Get";
+import { loadLoanAccounts } from "@/provider/slice/loan";
+import { InitializeLoanApplication } from "@/lib/Post";
 
-export default function LoanModal() {
-  const opened = true;
-  const fullname = `Anne Mayers Jones`
-
-  const updateStatus = async (value: string) => {
-
-  };
+type Props = {
+  modal: string
+}
+export default function LoanModal({ modal }: Props) {
+  const [success, setSuccess] = useState(false)
+  const [loading, setLoading] = useState(false)
+  const dispatch = useAppDispatch()
+  const [values, setValues] = useState(LoanInputInitialValues)
+  const [errors, setErrors] = useState(LoanInputInitialValues)
+  const onChange = (event: any) => {
+    const { name, value } = event.target
+    setValues({ ...values, [name]: value })
+    setErrors({ ...errors, [name]: "" })
+  }
+  const options = useAppSelector(store => store.account.options)
+  const fetchData = async () => {
+    const response = await fetchAllLoans();
+    dispatch(loadLoanAccounts(response.data))
+  }
+  const submit = async () => {
+    const isValid = validate(values)
+    if (!isValid.valid) return setErrors({ ...errors, ...isValid.errors })
+    if (isNaN(Number(values.amount))) return setErrors({ ...errors, amount: 'Please input a valid amount' })
+    setLoading(true)
+    const result = await InitializeLoanApplication(values);
+    if (result.success) {
+      await fetchData()
+      setSuccess(true)
+      setValues(LoanInputInitialValues)
+      setTimeout(() => { setSuccess(false); dispatch(closeModal()) }, 3500);
+    }
+  }
+  useEffect(() => {
+    setValues({ ...values, status: 'pending' })
+  }, [options])
 
   return (
-    <div className={`grid ${opened ? "grid-rows-[1fr]" : "grid-rows-[0fr]"} origin-top-right w-[750px] duration-500`}>
-      <div className={`border-2 text-white  w-full duration-500 bg-black/40 p-5 rounded-2xl shadow-lg shadow-black/20`}>
-        <div className="flex items-center gap-4">
-          <div className="w-full">
-            <div className="flex items-center justify-between">
-              <div className="flex gap-5 items-center">
-                <img alt="" className="h-24 w-24 rounded-full border-2" src="a" />
-                <Link href={"/accounts/5"} className="text-2xl duration-300 hover:text-blue-500 hover:underline font-semibold">
-                  Anne Mayers Paige
-                </Link>
-              </div>
-              <div className="flex items-center gap-7">
-                <Dropdown />
-                <Delete />
-              </div>
-            </div>
-          </div>
-        </div>
-        <div className="mt-7">
-          <div className="grid mb-5 text-[15px] grid-cols-3 gap-5">
-            <ModalLabelValue label="Account Holder" value={`Anne Mayers Jones`} labelStyle="text-gray-300" />
-            <ModalLabelValue label="Account Number" value={'2312121322'} labelStyle="text-gray-300" />
-            <ModalLabelValue label="Amount" uppercase value={'$5,000'} labelStyle="text-gray-300" />
-            <ModalLabelValue label="Reason" value={'Mortgage'} labelStyle="text-gray-300" />
-            <ModalLabelValue label="Transaction ID" value={'HHDH626'} labelStyle="text-gray-300" />
-            <ModalLabelValue label="Date" value={'20-02-24'} labelStyle="text-gray-300" />
-          </div>
-          <div className="flex justify-end">
-            <PenButton />
-          </div>
-        </div>
+    <ModalLayout success={success} modal={modal}>
+      <Success success={success} />
+      <div className="flex justify-between items-center">
+        <Title title="Credit Account" />
+        <p className="font-semibold text-lg">{values.accountNumber !== "" ? values.accountNumber : ''}</p>
       </div>
-    </div>
-  );
+      <div className="grid gap-5 mt-10 mb-5 grid-cols-2">
+        <Select options={options} style="text-black" label="Account Holder" name="accountNumber" onChange={onChange} value={values.accountNumber} error={errors.accountNumber} />
+        <Select style="text-black" data={['pending', 'success']} label="Status" name="status" onChange={onChange} value={values.status} error={errors.status} />
+        <Input inputStyle={{ color: "black" }} label="Amount" name="amount" onChange={onChange} value={values.amount} error={errors.amount} />
+        <Input inputStyle={{ color: "black" }} label="Date" name="date" onChange={onChange} value={values.date} error={errors.date} />
+      </div>
+      <Input inputStyle={{ color: "black" }} label="Reason" name="reason" onChange={onChange} value={values.reason} error={errors.reason} />
+      <div className="mt-7" onClick={submit}>
+        <Button2 loading={loading} title="Credit" end style={{ width: 'fit-content', background: 'green', paddingInline: '40px' }} />
+      </div>
+    </ModalLayout>
+  )
 }
