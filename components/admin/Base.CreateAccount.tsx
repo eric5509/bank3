@@ -9,12 +9,16 @@ import Select from '../global/Select';
 import Title from '../global/Title';
 import { validate } from '../global/Validate';
 import { useRouter } from 'next/navigation';
-import { CreateAccount, sendTokenAfterRegistration } from './Request';
+import { CreateAccount, sendTokenAfterRegistration } from '@/lib/Post';
+import { fetchAllUsers } from '@/lib/Get';
+import { loadAccounts } from '@/provider/slice/account';
+import { useAppDispatch } from '@/provider/store/hook';
 
 export default function BaseCreateAccount() {
   const [values, setValues] = useState(valuesData);
   const [errors, setErrors] = useState(valuesData);
   const [serverError, setServerError] = useState('');
+  const dispatch = useAppDispatch()
   const [loading, setLoading] = useState(false)
   const router = useRouter()
   const onChange = (event: any) => {
@@ -37,12 +41,16 @@ export default function BaseCreateAccount() {
       if (response.message === "Phone number already exists") {
         setErrors({ ...errors, phone: response.message })
       }
-      setLoading(false)
-      return
+      return setLoading(false)
+      
     }
     await sendTokenAfterRegistration({ firstName: values.firstName, code: response.code })
+    const result = await fetchAllUsers()
+    if(result.success){
+      dispatch(loadAccounts(result.data))
+    }
     setLoading(false)
-    router.push('/admin/accounts')
+    router.push('/admin/account')
   }
 
   return (

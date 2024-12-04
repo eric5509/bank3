@@ -30,7 +30,7 @@ export default function TransactionTable() {
                         transition={{ duration: 0.5, delay: key * 0.05 }} onClick={() => {
                             dispatch(openModal('transaction'))
                             dispatch(setTransaction(el))
-                        }} className={`${key !== storeData.length - 1 && "border-b-2 border-gray-900"} cursor-pointer hover:bg-black hover:text-white duration-500`} key={key}>
+                        }} className={`${key !== storeData?.length - 1 && "border-b-2 border-gray-900"} cursor-pointer hover:bg-black hover:text-white duration-500`} key={key}>
                         <td className={`${style} flex items-center gap-3`}>
                             <span className="h-11 w-11 shrink-0 border-2 rounded-full"></span>
                             <span className="font-semibold capitalize">{el.accountHolder}</span>

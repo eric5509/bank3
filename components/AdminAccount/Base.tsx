@@ -26,7 +26,7 @@ export default function Base({ accounts }: Props) {
                     <Button link='/admin/account/create' style={{ background: "green" }} title='Create Account' />
                 </div>
             </div>
-            {storeData.length > 0
+            {storeData?.length > 0
                 ? <AccountTable />
                 : <div className="flex-1 w-full h-full text-xl font-semibold text-white grid place-content-center">No Accounts to be Displayed</div>
             }

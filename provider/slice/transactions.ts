@@ -17,6 +17,10 @@ export const TransactionSlice = createSlice({
   name: "transaction",
   initialState,
   reducers: {
+    emptyTransactions: (state) => {
+      state.transactions = []
+      state.displayedTransactions = []
+    },
     loadTransactions: (state, action) => {
       state.transactions = action.payload.slice().reverse();
       state.displayedTransactions = state.transactions;
@@ -39,6 +43,7 @@ export const TransactionSlice = createSlice({
 export const {
   filterTransactions,
   setTransaction,
+  emptyTransactions,
   getAllTransactions,
   loadTransactions,
 } = TransactionSlice.actions;

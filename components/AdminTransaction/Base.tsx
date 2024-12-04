@@ -19,7 +19,7 @@ export default function Base() {
                     <Dropdown />
                 </div>
             </div>
-            {transactions.length > 0
+            {transactions?.length > 0
                 ?
                 <TransactionTable />
                 :

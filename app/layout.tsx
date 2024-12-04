@@ -3,7 +3,7 @@ import { Poppins } from 'next/font/google';
 import "./globals.css";
 import AppProvider from "@/provider/app/AppProvider";
 import { allLoansLink, allTransferLink, optionsLink, transactionsLink, usersLink } from "@/lib/links";
-import State from "@/components/admin/State";
+import AdminState from "@/components/admin/AdminState";
 
 
 
@@ -40,7 +40,7 @@ export default async function RootLayout({
     <html lang="en">
       <body className={`${font.className}`}>
         <AppProvider>
-          <State options={result2} loans={result5} transactions={result4} transfers={result3} accounts={result}/>
+          <AdminState options={result2} loans={result5} transactions={result4} transfers={result3} accounts={result}/>
           {children}
         </AppProvider>
       </body>

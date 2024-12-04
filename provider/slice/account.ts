@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { TAccount, TAccount2 } from "./type";
+import { TAccount } from "./type";
 
 type TInitialState = {
   accounts: TAccount[];
@@ -8,14 +8,14 @@ type TInitialState = {
     value: string
   }[]
   displayedAccounts: TAccount[];
-  account: TAccount2 ;
+  account: TAccount | null ;
 };
 
 const initialState: TInitialState = {
   accounts: [],
   options: [],
   displayedAccounts: [],
-  account: {}
+  account: null
 };
 
 export const AccountSlice = createSlice({

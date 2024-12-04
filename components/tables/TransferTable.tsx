@@ -2,7 +2,7 @@
 import React, { useEffect } from 'react'
 import { motion } from "framer-motion";
 import TableLayout from '../admin/TableLayout'
-import { TAccount, TAccount2, TOptions, TTransaction, TTransfer } from '@/provider/slice/type'
+import { TAccount, TOptions, TTransaction, TTransfer } from '@/provider/slice/type'
 import { useAppDispatch, useAppSelector } from '@/provider/store/hook'
 import { openModal } from '@/provider/slice/modal'
 import { loadTransactions, setTransaction } from '@/provider/slice/transactions'
@@ -46,7 +46,7 @@ export default function TransferTable() {
                         transition={{ duration: 0.5, delay: key * 0.05 }} onClick={() => {
                             dispatch(openModal('transfer'))
                             dispatch(setTransfer(el))
-                        }} className={`${key !== storeData.length - 1 && "border-b-2 border-gray-900"} cursor-pointer hover:bg-black hover:text-white duration-500`} key={key}>
+                        }} className={`${key !== storeData?.length - 1 && "border-b-2 border-gray-900"} cursor-pointer hover:bg-black hover:text-white duration-500`} key={key}>
                         <td className={`${style} flex items-center gap-3`}>
                             <span className="h-11 w-11 shrink-0 border-2 rounded-full"></span>
                             <span className="font-semibold capitalize">{el?.senderAccountName}</span>

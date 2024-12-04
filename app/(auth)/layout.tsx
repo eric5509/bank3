@@ -1,11 +1,20 @@
-import React from 'react'
+import {
+  allLoansLink,
+  allTransferLink,
+  optionsLink,
+  transactionsLink,
+  usersLink,
+} from "@/lib/links";
+import AdminState from "@/components/admin/AdminState";
 
 type Children = {
-    children: React.ReactNode
-}
+  children: React.ReactNode;
+};
 
-export default function layout({children}: Children) {
+export default async function layout({ children }: Children) {
   return (
-    <div>{children}</div>
-  )
+    <div>
+      {children}
+    </div>
+  );
 }

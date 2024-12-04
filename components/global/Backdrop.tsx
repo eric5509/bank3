@@ -13,6 +13,7 @@ import { useEffect, useState } from "react"
 import { loadOptions } from "@/provider/slice/account"
 import { optionsLink } from "@/lib/links"
 import LoanModal from "../admin/LoanModal"
+import LoanDetailsModal from "../admin/LoanDetailsModal"
 
 export default function Backdrop() {
     const [loading, setLoading] = useState(false)
@@ -23,6 +24,7 @@ export default function Backdrop() {
         <div className={`${opened !== "" ? "opacity-100 visible" : "invisible opacity-0"} overflow-y-auto duration-500 h-screen w-full grid place-content-center top-0 left-0 delay-200 backdrop-blur-md bg-black/10 fixed z-[5000]`}>
             <CreditModal modal="credit" />
             <LoanModal modal="loan" />
+            <LoanDetailsModal modal="loanDetails" />
             <DebitModal modal="debit" />
             <AccountModal modal="account" />
             <TransactionModal modal='transaction' />

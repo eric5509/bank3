@@ -1,6 +1,19 @@
 import { ValuesDataType } from "@/components/admin/data";
-import { creditLink, debitLink, inboundTransferLink, loanApplicationLink, outboundTransferLink, transactionsLink } from "./links";
-import { TLoan, TTransferInBound, TTransferOutBound } from "@/provider/slice/type";
+import {
+  creditLink,
+  debitLink,
+  inboundTransferLink,
+  loanApplicationLink,
+  loginLink,
+  outboundTransferLink,
+  transactionsLink,
+} from "./links";
+import {
+  TCredit,
+  TLoan,
+  TTransferInBound,
+  TTransferOutBound,
+} from "@/provider/slice/type";
 
 export const CreateAccount = async (values: ValuesDataType) => {
   try {
@@ -11,7 +24,8 @@ export const CreateAccount = async (values: ValuesDataType) => {
       },
       body: JSON.stringify(values),
     });
-    return response.json();
+    const data = await response.json();
+    return data
   } catch (error: any) {
     return { success: false, message: error.message || "Something went wrong" };
   }
@@ -26,7 +40,8 @@ export const InitializeOutboundTransfer = async (values: TTransferOutBound) => {
       },
       body: JSON.stringify(values),
     });
-    return response.json();
+    const data = await response.json();
+    return data
   } catch (error: any) {
     return { success: false, message: error.message || "Something went wrong" };
   }
@@ -41,11 +56,8 @@ export const InitializeInboundTransfer = async (values: TTransferInBound) => {
       },
       body: JSON.stringify(values),
     });
-    const result = await response.json();
-    if (result.success) {
-      return { success: true, data: result.data, message: result.message };
-    }
-    return { success: false, data: null, message: result.message };
+    const data = await response.json();
+    return data
   } catch (error: any) {
     return {
       success: false,
@@ -73,16 +85,15 @@ export const sendTokenAfterRegistration = async ({
         firstName,
       }),
     });
-    return await response.json();
+    const data = await response.json();
+    return data
   } catch (error: any) {
     return { success: false, message: error.message, data: null };
   }
 };
 
 
-
-type NewLoanType = Omit<TLoan, 'user' | 'accountHolder'>;
-export const InitializeLoanApplication = async (values: NewLoanType) => {
+export const InitializeLoanApplication = async (values: Omit<TLoan, "user" | "accountHolder" | "loanID">) => {
   try {
     const response = await fetch(loanApplicationLink, {
       method: "POST",
@@ -91,8 +102,60 @@ export const InitializeLoanApplication = async (values: NewLoanType) => {
       },
       body: JSON.stringify(values),
     });
-    return response.json();
+    const data = await response.json();
+    return data;
   } catch (error: any) {
-    return { success: false, message: error.message || "Something went wrong" };
+    return { success: false, message: error.message || "Something went wrong", data: null };
   }
 };
+
+
+export const CreditAccount = async (values: TCredit) => {
+  try {
+    const response = await fetch(creditLink, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(values),
+    });
+    const data = await response.json();
+    return data;
+  } catch (error: any) {
+    return { success: false, message: error.message || "Something went wrong", data: null };
+  }
+};
+
+
+export const DebitAccount = async (values: TCredit) => {
+  try {
+    const response = await fetch(debitLink, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(values),
+    });
+    const data = await response.json();
+    return data;
+  } catch (error: any) {
+    return { success: false, message: error.message || "Something went wrong", data: null };
+  }
+};
+
+export const InitializeLogin = async (values: {accountNumber: string, password: string}) => {
+  try {
+    const response = await fetch(loginLink, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(values),
+    });
+    const data = await response.json();
+    return data;
+  } catch (error: any) {
+    return { success: false, message: error.message || "Something went wrong", data: null };
+  }
+};
+

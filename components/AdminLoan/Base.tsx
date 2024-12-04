@@ -21,7 +21,7 @@ export default function Base() {
                     <Dropdown />
                 </div>
             </div>
-            {storeData.length > 0
+            {storeData?.length > 0
                 ?
                 <LoanTable />
                 :

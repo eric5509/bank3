@@ -17,14 +17,14 @@ type Props = {
     loans: TLoan[]
 }
 
-export default function State({ options, accounts, loans, transactions, transfers }: Props) {
+export default function AdminState({ options, accounts, loans, transactions, transfers }: Props) {
     const dispatch = useAppDispatch()
     useEffect(() => {
-        if (options.length > 0) dispatch(loadOptions(options))
-        if (accounts.length > 0) dispatch(loadAccounts(accounts))
-        if (loans.length > 0) dispatch(loadLoanAccounts(loans))
-        if (transactions.length > 0) dispatch(loadTransactions(transactions))
-        if (transfers.length > 0) dispatch(loadTransfers(transfers))
+        if (options?.length > 0) dispatch(loadOptions(options))
+        if (accounts?.length > 0) dispatch(loadAccounts(accounts))
+        if (loans?.length > 0) dispatch(loadLoanAccounts(loans))
+        if (transactions?.length > 0) dispatch(loadTransactions(transactions))
+        if (transfers?.length > 0) dispatch(loadTransfers(transfers))
     }, [])
 
     return (

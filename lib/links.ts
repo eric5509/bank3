@@ -14,7 +14,7 @@ export const updateTransactionLink = "http://localhost:5000/transaction/update";
 
 // USER LINKS
 export const usersLink = "http://localhost:5000/users";
-export const loginLink = "http://localhost:5000/users/login";
+export const loginLink = "http://localhost:5000/user/login";
 export const updateUserLink = "http://localhost:5000/user/update";
 export const optionsLink = "http://localhost:5000/users/options";
 export const deleteUserLink = "http://localhost:5000/user/delete/";
@@ -23,4 +23,5 @@ export const deleteUserLink = "http://localhost:5000/user/delete/";
 // LOAN LINKS
 export const allLoansLink = "http://localhost:5000/loans";
 export const loanApplicationLink = "http://localhost:5000/loan/apply";
+export const loanDeletionLink = "http://localhost:5000/loan/delete/";
 

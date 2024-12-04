@@ -1,4 +1,3 @@
-import { sendTokenAfterRegistration } from "@/components/admin/Request";
 import TransferInbound from "@/components/admin/TransferInbound";
 import TransferInternal from "@/components/admin/TransferInternal";
 
