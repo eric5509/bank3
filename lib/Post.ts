@@ -7,6 +7,7 @@ import {
   loginLink,
   outboundTransferLink,
   transactionsLink,
+  verifyOtpLink,
   verifyPinLink,
 } from "./links";
 import {
@@ -68,21 +69,45 @@ export const InitializeInboundTransfer = async (values: TTransferInBound) => {
   }
 };
 
-export const sendTokenAfterRegistration = async ({
-  code,
+export const SendSignupOTP = async ({
+  otp,
   firstName,
 }: {
-  code: string;
+  otp: string;
   firstName: string;
 }) => {
   try {
-    const response = await fetch("http://localhost:3000/api/email", {
+    const response = await fetch("http://localhost:3000/api/email/signup", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        code,
+        otp,
+        firstName,
+      }),
+    });
+    const data = await response.json();
+    return data
+  } catch (error: any) {
+    return { success: false, message: error.message, data: null };
+  }
+};
+export const SendLoginOTP = async ({
+  otp,
+  firstName,
+}: {
+  otp: string;
+  firstName: string;
+}) => {
+  try {
+    const response = await fetch("http://localhost:3000/api/email/login", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        otp,
         firstName,
       }),
     });
@@ -159,10 +184,26 @@ export const InitializeLogin = async (values: {accountNumber: string, password: 
     return { success: false, message: error.message || "Something went wrong", data: null };
   }
 };
-export const ProcessPinValidation = async (values: {authPin: string, accountNumber: string | null}) => {
+export const ProcessPINValidation = async (values: {authPin: string, accountNumber: string | null}) => {
   console.log(values)
   try {
     const response = await fetch(verifyPinLink, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(values),
+    });
+    const data = await response.json();
+    return data;
+    
+  } catch (error: any) {
+    return { success: false, message: error.message || "Something went wrong", data: null };
+  }
+};
+export const ProcessOTPValidation = async (values: {otp: string, email: string}) => {
+  try {
+    const response = await fetch(verifyOtpLink, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

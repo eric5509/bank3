@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import Button from "../global/Button";
 import Input from "../global/Input";
 import { validate } from "../global/Validate";
-import { ProcessPinValidation } from "@/lib/Post";
+import { ProcessPINValidation } from "@/lib/Post";
 import { useRouter, useSearchParams } from "next/navigation";
 import AuthFooter from "./AuthFooter";
 
@@ -31,7 +31,7 @@ export default function AuthOTP() {
     const isValid = validate(values);
     if (!isValid.valid) return setErrors({ ...errors, ...isValid.errors });
     setLoading(true);
-    const result = await ProcessPinValidation(values);
+    const result = await ProcessPINValidation(values);
     if (!result.success) {
       setErrors({ ...errors, authPin: result.message });
       return setLoading(false);

@@ -8,10 +8,10 @@ import {
 
 type Props = {
   firstName: string;
-  code: string;
+  otp: string;
 };
 
-export const VerificationEmailTemplate = ({ firstName, code }: Props) => {
+export const LoginEmailTemplate = ({ firstName, otp }: Props) => {
   return (
       <Html>
           <head>
@@ -68,7 +68,7 @@ export const VerificationEmailTemplate = ({ firstName, code }: Props) => {
                               marginBottom: "30px",
                           }}
                       >
-                          Thank You for Signing Up!
+                          Login Attempt
                       </Text>
                       <Text
                           style={{
@@ -78,11 +78,11 @@ export const VerificationEmailTemplate = ({ firstName, code }: Props) => {
                               marginTop: "10px",
                           }}
                       >
-                          Please Verify Your Account
+                          Access your Account
                       </Text>
                   </Container>
                   <Container style={{ padding: "10px" }}>
-                      <Text style={{ fontSize: "16px", marginTop: "15px" }}>
+                      <Text style={{ fontSize: "16px",textTransform: 'capitalize', marginTop: "15px" }}>
                           Hello <strong>{firstName}</strong>,
                       </Text>
                       <Text
@@ -103,7 +103,7 @@ export const VerificationEmailTemplate = ({ firstName, code }: Props) => {
                               margin: "10px 0",
                           }}
                       >
-                          {code}
+                          {otp}
                       </Text>
                       <Text style={{ fontSize: "14px", marginTop: "10px" }}>
                           This passcode will only be valid for the next 15
@@ -168,4 +168,4 @@ export const VerificationEmailTemplate = ({ firstName, code }: Props) => {
   );
 };
 
-export default VerificationEmailTemplate;
+export default LoginEmailTemplate;

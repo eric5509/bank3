@@ -10,14 +10,15 @@ import { LoginInputInitialValues } from "../admin/data";
 import { BsEye, BsEyeSlash } from "react-icons/bs";
 import AuthFooter from "./AuthFooter";
 import Button2 from "../global/Button2";
+import { useCookies } from "react-cookie";
 
 export default function Login() {
   const router = useRouter();
-
   const [values, setValues] = useState(LoginInputInitialValues);
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState(LoginInputInitialValues);
   const [serverError, setServerError] = useState("");
+  const [cookies, setCookie, removeCookie] = useCookies(["user"]);
 
   const onChange = (e: any) => {
     const { value, name } = e.target;
@@ -36,8 +37,7 @@ export default function Login() {
       return setLoading(false);
     }
     setLoading(false);
-    localStorage.setItem("fullName", result.data.fullName);
-    localStorage.setItem("accountNumber", result.data.accountNumber);
+    setCookie('user', result.data, {path: '/'})
     router.push(`/auth/verify-pin`);
   };
 

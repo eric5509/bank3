@@ -1,5 +1,5 @@
-import VerifyPin, { TAuthLogin } from "@/components/AccountAdmin/VerifyPin";
-import AnimatePageLayout from "@/components/global/AnimatePageLayout";
+import { TAuthLogin } from "@/components/AccountAdmin/VerifyPin";
+import VerifyOTP from "@/components/admin/VerifyOTP";
 import { cookies } from "next/headers";
 
 export default async function page() {
@@ -10,8 +10,6 @@ export default async function page() {
     data = JSON.parse(user.value)
   }
   return (
-    <AnimatePageLayout>
-        <VerifyPin data={data}/>
-    </AnimatePageLayout>
+        <VerifyOTP data={data}/>
   )
 }
