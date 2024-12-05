@@ -18,6 +18,7 @@ export const loginLink = "http://localhost:5000/user/login";
 export const updateUserLink = "http://localhost:5000/user/update";
 export const optionsLink = "http://localhost:5000/users/options";
 export const deleteUserLink = "http://localhost:5000/user/delete/";
+export const verifyPinLink = "http://localhost:5000/user/verify-pin";
 
 
 // LOAN LINKS

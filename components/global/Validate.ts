@@ -34,7 +34,7 @@ const errorMessages = {
   accountNumber: "Please enter your Account Number",
   email: "Please enter your Email Address",
   currency: "Please select your Currency",
-  authPin: "Please enter your Login Pin",
+  authPin: "Please enter your Authentication Pin",
   transferin: "Please enter your Transfer Pin",
   cot: "Please enter your COT",
   imf: "Please enter your IMF",

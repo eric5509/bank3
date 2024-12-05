@@ -7,6 +7,7 @@ import {
   loginLink,
   outboundTransferLink,
   transactionsLink,
+  verifyPinLink,
 } from "./links";
 import {
   TCredit,
@@ -146,6 +147,22 @@ export const DebitAccount = async (values: TCredit) => {
 export const InitializeLogin = async (values: {accountNumber: string, password: string}) => {
   try {
     const response = await fetch(loginLink, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(values),
+    });
+    const data = await response.json();
+    return data;
+  } catch (error: any) {
+    return { success: false, message: error.message || "Something went wrong", data: null };
+  }
+};
+export const ProcessPinValidation = async (values: {authPin: string, accountNumber: string | null}) => {
+  console.log(values)
+  try {
+    const response = await fetch(verifyPinLink, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
