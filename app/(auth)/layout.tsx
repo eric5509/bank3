@@ -13,7 +13,7 @@ type Children = {
 
 export default async function layout({ children }: Children) {
   return (
-    <div>
+    <div className="min-h-screen ">
       {children}
     </div>
   );

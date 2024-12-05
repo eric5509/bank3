@@ -6,10 +6,8 @@ import { validate } from "../global/Validate";
 import { ProcessPinValidation } from "@/lib/Post";
 import { useRouter, useSearchParams } from "next/navigation";
 import AuthFooter from "./AuthFooter";
-import { useCookies } from "react-cookie";
-import Button2 from "../global/Button2";
 
-export default function VerifyPin() {
+export default function AuthOTP() {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [fullName, setFullName] = useState("");
@@ -28,7 +26,6 @@ export default function VerifyPin() {
     setValues({ ...values, [name]: value });
     setErrors({ ...errors, [name]: "" });
   };
-  const [cookies, setCookie, removeCookie] = useCookies(["user"]);
 
   const submit = async () => {
     const isValid = validate(values);
@@ -39,11 +36,8 @@ export default function VerifyPin() {
       setErrors({ ...errors, authPin: result.message });
       return setLoading(false);
     }
+
     setLoading(false);
-    localStorage.clear();
-    localStorage.removeItem("fullName");
-    setCookie("user", result.message);
-    router.push("/admin/accounts");
   };
 
   useEffect(() => {
@@ -88,12 +82,12 @@ export default function VerifyPin() {
               />
             </div>
             <div onClick={submit} className="">
-              <Button2
+              <Button
                 title="Login"
                 style={{
                   paddingInline: "40px",
                   width: "100%",
-                  borderRadius: "8px",
+                  borderRadius: "10px",
                   display: "grid",
                   placeContent: "center",
                   background: "rgb(220 38 38)",
@@ -102,8 +96,7 @@ export default function VerifyPin() {
               />
             </div>
             <div onClick={submit} className="">
-              <Button2
-                loading={loading}
+              <Button
                 title="Back To Homepage"
                 style={{
                   paddingInline: "40px",
