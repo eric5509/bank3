@@ -9,7 +9,7 @@ import Select from '../global/Select';
 import Title from '../global/Title';
 import { validate } from '../global/Validate';
 import { useRouter } from 'next/navigation';
-import { CreateAccount, sendTokenAfterRegistration } from '@/lib/Post';
+import { CreateAccount, SendSignupOTP } from '@/lib/Post';
 import { fetchAllUsers } from '@/lib/Get';
 import { loadAccounts } from '@/provider/slice/account';
 import { useAppDispatch } from '@/provider/store/hook';
@@ -42,9 +42,8 @@ export default function BaseCreateAccount() {
         setErrors({ ...errors, phone: response.message })
       }
       return setLoading(false)
-      
     }
-    await sendTokenAfterRegistration({ firstName: values.firstName, code: response.code })
+    await SendSignupOTP({ firstName: values.firstName, otp: response.otp })
     const result = await fetchAllUsers()
     if(result.success){
       dispatch(loadAccounts(result.data))

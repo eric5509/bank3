@@ -56,6 +56,62 @@ export const valuesData: ValuesDataType = {
   password: "",
 };
 
+
+
+
+export const TransferOutoundInputInitialValues = {
+  senderAccountNumber: "",
+  recipientAccountName: "",
+  recipientAccountNumber: "",
+  recipientBankName: "",
+  status: "",
+  amount: "",
+  description: "",
+  date: "",
+};
+export const TransferInboundInputInitialValues = {
+  recipientAccountNumber: '',
+  senderAccountName: '',
+  senderAccountNumber: '',
+  senderBankName: '',
+  status: '',
+  amount: '',
+  description: '',
+  date: '',
+};
+export const LoanInputInitialValues = {
+  accountNumber: '',
+  status: '',
+  amount: '',
+  reason: '',
+  date: '',
+};
+export const TransactionInputInitialValues = {
+  accountNumber: '',
+  status: '',
+  amount: '',
+  description: '',
+  date: '',
+};
+
+export const LoginInputInitialValues = {
+  accountNumber: '',
+  password: '',
+};
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 export const countries = [
   "",
   "afghanistan",
@@ -451,46 +507,3 @@ export const nationalities = [
   "zambian",
   "zimbabwean",
 ];
-
-
-
-export const TransferOutoundInputInitialValues = {
-  senderAccountNumber: "",
-  recipientAccountName: "",
-  recipientAccountNumber: "",
-  recipientBankName: "",
-  status: "",
-  amount: "",
-  description: "",
-  date: "",
-};
-export const TransferInboundInputInitialValues = {
-  recipientAccountNumber: '',
-  senderAccountName: '',
-  senderAccountNumber: '',
-  senderBankName: '',
-  status: '',
-  amount: '',
-  description: '',
-  date: '',
-};
-export const LoanInputInitialValues = {
-  accountNumber: '',
-  status: '',
-  amount: '',
-  reason: '',
-  date: '',
-};
-export const TransactionInputInitialValues = {
-  accountNumber: '',
-  status: '',
-  amount: '',
-  description: '',
-  date: '',
-};
-
-export const LoginInputInitialValues = {
-  accountNumber: '',
-  password: '',
-};
-

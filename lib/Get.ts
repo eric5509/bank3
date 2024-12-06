@@ -1,4 +1,4 @@
-import { allLoansLink, allTransferLink, transactionsLink, usersLink } from "@/lib/links";
+import { allLoansLink, allTransferLink, transactionsLink, userLink, usersLink } from "@/lib/links";
 
 export const fetchAllUsers = async () => {
   try {
@@ -11,7 +11,7 @@ export const fetchAllUsers = async () => {
 
 export const fetchSingleUser = async (id: string) => {
   try {
-    const response = await fetch(`${usersLink}${id}`);
+    const response = await fetch(`${userLink}${id}`);
     return await response.json();
   } catch (error: any) {
     return { data: null, message: error.message, success: false };

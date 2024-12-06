@@ -6,8 +6,8 @@ type Address = {
   postalCode: string;
 };
 
-type TAccount = {
-  accountID: string;
+export type TAccount = {
+  accountID?: string;
   firstName: string;
   lastName: string;
   middleName: string;
@@ -15,19 +15,29 @@ type TAccount = {
   email: string;
   occupation: string;
   gender: "male" | "female" | "other";
-  residentialAddress: Address;
-  birthDate: string; // In the format "YYYY-MM-DD"
+  state: string
+  street: string
+  city: string
+  country: string
+  zipCode: string
+  dob: string;  
   imf: string;
   cot: string;
-  currentBalance: number;
-  availableBalance: number;
+  currentBalance: string;
+  availableBalance: string;
   maritalStatus: "single" | "married" | "divorced" | "widowed";
-  country: string;
+  nationality: string;
   accountNumber: string;
-  routingNumber: string;
+  cryptoTransfer?: boolean;
+  routingNumber?: string;
   accountType: "checking" | "savings" | "business";
   status: "success" | "on-hold" | "pending" | "blocked";
   active: boolean;
-  currency: string; // e.g., "USD", "GBP", "AED"
-};
+  transferPin: string
+  authPin: string 
+  password: string
+  verified: boolean
+  admin: boolean
+  currency: "USD"| "GBP"| "EUR";
+}
  

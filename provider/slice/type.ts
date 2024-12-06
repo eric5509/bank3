@@ -39,6 +39,9 @@ export type TAccount = {
   password: string;
 };
 
+
+
+
 export type TTransferOutBound = {
   senderAccountNumber: string;
   recipientAccountName: string;

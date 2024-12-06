@@ -1,199 +1,192 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Button2 from "../global/Button2";
 import Input from "../global/Input";
+import { valuesData } from "./data";
+import { TAccount } from "../global/type";
+import Select from "../global/Select";
 
-export default function BaseUpdate() {
-  const [accountInfo, setAccountInfo] = useState({
-    firstname: "",
-    middlename: "",
-    lastname: "",
-    phone: "",
-    email: "",
-    dob: "",
-    country: "",
-    state: "",
-    street: "",
-    city: "",
-    zip: "",
-    currency: "",
-    occupation: "",
-    maritalStatus: "",
-    accountType: "",
-    currentBalance: "",
-    availableBalance: "",
-    cot: "",
-    ssn: "",
-    imfNumber: "",
-    pin: "",
-    password: "",
-  });
+type Props = {
+  data: TAccount;
+};
+
+export default function BaseUpdate({ data }: Props) {
+  const [values, setValues] = useState(valuesData);
+  const [errors, setErrors] = useState(valuesData);
+
 
   const onChange = (event: any) => {
     const { name, value } = event.target;
-    setAccountInfo({
-      ...accountInfo,
-      [name]: value,
-    });
+    setValues({...values, [name]: value})
+    setErrors({...errors, [name]: ''})
   };
+
+  useEffect(() => {
+    setValues(data);
+  }, []);
   return (
     <div className="w-full">
       <div className="grid w-full grid-cols-4 gap-3">
         <Input
-          label="Firstname"
-          name="firstname"
+          label="First Name"
+          name="firstName"
           onChange={onChange}
-          value=""
-          error=""
+          value={values.firstName}
+          error={errors.firstName}
         />
         <Input
-          label="Firstname"
-          name="firstname"
+          label="Last Name"
+          name="lastName"
           onChange={onChange}
-          value=""
-          error=""
+          value={values.lastName}
+          error={errors.lastName}
         />
         <Input
-          label="Firstname"
-          name="firstname"
+          label="Middle Name"
+          name="middleName"
           onChange={onChange}
-          value=""
-          error=""
+          value={values.middleName}
+          error={errors.middleName}
         />
         <Input
-          label="Firstname"
-          name="firstname"
+          label="Phone"
+          name="phone"
           onChange={onChange}
-          value=""
-          error=""
+          value={values.phone}
+          error={errors.phone}
         />
         <Input
-          label="Firstname"
-          name="firstname"
+          label="Email"
+          name="email"
           onChange={onChange}
-          value=""
-          error=""
+          value={values.email}
+          error={errors.email}
         />
         <Input
-          label="Firstname"
-          name="firstname"
+          label="Occupation"
+          name="occupation"
           onChange={onChange}
-          value=""
-          error=""
+          value={values.occupation}
+          error={errors.occupation}
+        />
+        <Select
+          label="Gender"
+          name="gender"
+          data={["male", "female", "other"]}
+          onChange={onChange}
+          value={values.gender}
+          error={errors.gender}
         />
         <Input
-          label="Firstname"
-          name="firstname"
+          label="State"
+          name="state"
           onChange={onChange}
-          value=""
-          error=""
+          value={values.state}
+          error={errors.state}
         />
         <Input
-          label="Firstname"
-          name="firstname"
+          label="Street"
+          name="street"
           onChange={onChange}
-          value=""
-          error=""
+          value={values.street}
+          error={errors.street}
         />
         <Input
-          label="Firstname"
-          name="firstname"
+          label="Date of Birth"
+          name="dob"
           onChange={onChange}
-          value=""
-          error=""
+          value={values.dob}
+          error={errors.dob}
         />
         <Input
-          label="Firstname"
-          name="firstname"
+          label="IMF Code"
+          name="imf"
           onChange={onChange}
-          value=""
-          error=""
+          value={values.imf}
+          error={errors.imf}
         />
         <Input
-          label="Firstname"
-          name="firstname"
+          label="COT Code"
+          name="cot"
           onChange={onChange}
-          value=""
-          error=""
+          value={values.cot}
+          error={errors.cot}
         />
         <Input
-          label="Firstname"
-          name="firstname"
+          label="Current Balance"
+          name="currentBalance"
           onChange={onChange}
-          value=""
-          error=""
+          value={values.currentBalance}
+          error={errors.currentBalance}
         />
         <Input
-          label="Firstname"
-          name="firstname"
+          label="Available Balance"
+          name="availableBalance"
           onChange={onChange}
-          value=""
-          error=""
+          value={values.availableBalance}
+          error={errors.availableBalance}
+        />
+        <Select
+          label="Marital Status"
+          name="maritalStatus"
+          data={["single", "married", "divorced", "widowed"]}
+          onChange={onChange}
+          value={values.maritalStatus}
+          error={errors.maritalStatus}
         />
         <Input
-          label="Firstname"
-          name="firstname"
+          label="Country"
+          name="country"
           onChange={onChange}
-          value=""
-          error=""
+          value={values.country}
+          error={errors.country}
         />
         <Input
-          label="Firstname"
-          name="firstname"
+          label="Account Number"
+          name="accountNumber"
           onChange={onChange}
-          value=""
-          error=""
+          value={values.accountNumber}
+          error={errors.accountNumber}
         />
         <Input
-          label="Firstname"
-          name="firstname"
+          label="Routing Number"
+          name="routingNumber"
           onChange={onChange}
-          value=""
-          error=""
+          value={values.routingNumber}
+          error={errors.routingNumber}
+        />
+        <Select
+          label="Account Type"
+          name="accountType"
+          data={["checking", "savings", "business"]}
+          onChange={onChange}
+          value={values.accountType}
+          error={errors.accountType}
+        />
+        <Select
+          label="Status"
+          name="status"
+          data={["success", "on-hold", "pending", "blocked"]}
+          onChange={onChange}
+          value={values.status}
+          error={errors.status}
+        />
+        <Select
+          label="Active"
+          name="active"
+          onChange={onChange}
+          value={values.active}
+          error={errors.active}
         />
         <Input
-          label="Firstname"
-          name="firstname"
+          label="Currency"
+          name="currency"
           onChange={onChange}
-          value=""
-          error=""
-        />
-        <Input
-          label="Firstname"
-          name="firstname"
-          onChange={onChange}
-          value=""
-          error=""
-        />
-        <Input
-          label="Firstname"
-          name="firstname"
-          onChange={onChange}
-          value=""
-          error=""
-        />
-        <Input
-          label="Firstname"
-          name="firstname"
-          onChange={onChange}
-          value=""
-          error=""
-        />
-        <Input
-          label="Firstname"
-          name="firstname"
-          onChange={onChange}
-          value=""
-          error=""
-        />
-        <Input
-          label="Firstname"
-          name="firstname"
-          onChange={onChange}
-          value=""
-          error=""
+          value={values.currency}
+          error={errors.currency}
         />
       </div>
+
       <div className="flex justify-end w-full">
         <Button2 title="Update" style={{ width: "300px", height: "55px" }} />
       </div>
